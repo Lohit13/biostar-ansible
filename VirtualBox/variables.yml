@@ -1,0 +1,101 @@
+---
+# These are all the settings used in the deployment of the Biostar instance. 
+# 
+# The only required settings are under 'REQUIRED SETTINGS'. 
+#
+# All other settings are supplied with a default. Though, changing the biostars settings is recommended for personalization.
+# 
+
+# REQUIRED SETTINGS
+postgresql_username: "biostar"
+postgresql_password: "password"
+
+# GITHUB LINK TO BIOSTAR INSTANCE
+git_repo: "https://github.com/ialbert/biostar-central"
+branch: "master"
+
+
+# DIRECTORY SETTINGS
+# The following paths must be full paths (no '~').
+
+# Path of biostar codebase inside container
+base_dir: /home/vagrant
+virtualenv_dir: /home/vagrant/codebase
+biostar_dir: /home/vagrant/codebase/biostar
+# Path of pip requirements file in biostar
+requirement_dir: /home/vagrant/codebase/biostar/conf/requirements/deploy.txt
+
+
+# AWS EC2 SETTINGS
+keypair: "biostar-2"
+instance_type: "t1.micro"
+image: "ami-896c96fe"
+group: "biostar-group"
+region: "eu-west-1"
+volume_size: 10
+ssh_localhost_public_key_file_path: "~/.ssh/id_rsa.pub"
+ssh_localhost_public_key: "{{ lookup('file', '' + ssh_localhost_public_key_file_path) }}"
+
+
+# BIOSTAR SETTINGS
+
+# The main website URL.
+# This URL is used in Django settings (ALLOWED_HOSTS), in Django Site (django.contrib.sites) and Nginx.
+# Also, in case this URL starts with 'www.', a redirection from the non-www URL version to the www one is setup in Nginx.
+# The reverse, in case this URL does not start with 'www.'.
+BIOSTAR_HOSTNAME: "localhost:8080"
+
+# List of secondary website URLs separated by a blank space.
+# These URLs are allowed in Django settings (ALLOWED_HOSTS) and Nginx, but not used in Django Site (django.contrib.sites).
+BIOSTAR_EXTRA_HOSTNAMES: "your_secondary_domain.com another_one.com"
+
+# Site name.
+SITE_NAME: 'Biostar'
+
+# These settings create an admin user.
+# The default password is the SECRET_KEY.
+BIOSTAR_ADMIN_NAME: "Your Name"
+BIOSTAR_ADMIN_EMAIL: "your_address@domain.com"
+DEFAULT_FROM_EMAIL: "A Name <a_address@domain.com>"
+
+# Secret key. Override it by sourcing a different file.
+SECRET_KEY: 'your-key'
+
+# Postgres database name
+DATABASE_NAME: "mydatabase"
+
+# Email specific settings.
+EMAIL_HOST: 'smtp.mydomain.com'
+EMAIL_PORT: '465'
+EMAIL_HOST_USER: 'myuser@domain.com'
+EMAIL_HOST_PASSWORD: 'mypassword'
+EMAIL_USE_TLS: 1  # 0 means False, 1 means True.
+EMAIL_BACKEND: 'biostar.mailer.SSLEmailBackend'
+
+# Set the social authentication provider keys and secrets.
+GOOGLE_PROVIDER_KEY: 'foobar'
+GOOGLE_PROVIDER_SECRET_KEY: 'foobar'
+
+FACEBOOK_PROVIDER_KEY: 'foobar'
+FACEBOOK_PROVIDER_SECRET_KEY: 'foobar'
+
+GITHUB_PROVIDER_KEY: 'foobar'
+GITHUB_PROVIDER_SECRET_KEY: 'foobar'
+
+TWITTER_PROVIDER_KEY: 'foobar'
+TWITTER_PROVIDER_SECRET_KEY: 'foobar'
+
+ORCID_PROVIDER_KEY: 'foobar'
+ORCID_PROVIDER_SECRET_KEY: 'foobar'
+
+GOOGLE_TRACKER: "UA-XXXXXXX-XX"
+GOOGLE_DOMAIN: "mydomain.com"
+
+# Site logo and main style scheet: store these files in roles/docker_webapp/files/biostar/static.
+SITE_LOGO: "neurostars.logo.png"
+SITE_STYLE_CSS: "neurostars.style.less"
+
+# GitHub Webhook password for continuous deployment.
+GITHUB_WEBHOOK_PASSWORD: 'foobar'
+
+# Don't mess with the next line

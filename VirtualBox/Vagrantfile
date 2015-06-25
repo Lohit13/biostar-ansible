@@ -1,0 +1,28 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+ 
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+ 
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+  config.vm.box = "base"
+ 
+  # Default to localhost, otherwise 3(NXDOMAIN)
+  config.vm.hostname = "localhost"
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "deploy.yml"
+#   ansible.verbose = 'vvvv'
+#   ansible.inventory_path = '.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory'
+    ansible.extra_vars = { ansible_ssh_user: 'vagrant' }
+  end
+ 
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+ 
+   config.vm.provider "virtualbox" do |vb|
+     # Use VBoxManage to customize the VM. For example to change memory:
+	 # Needed, otherwise the JVM spills out of memory errors.
+     vb.customize ["modifyvm", :id, "--memory", "2048"]
+  end
+end

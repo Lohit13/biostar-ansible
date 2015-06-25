@@ -1,0 +1,14 @@
+---
+
+- name: Ensure Docker server is running
+  service:
+    name: docker
+    state: started
+  sudo: True
+
+- name: Run the PostgreSQL container
+  # We do not use the Ansible docker module because it has an issue if an environment variable cantains a '='.
+  # In our case the env var SSH_PUBLIC_KEY might contain '='.
+  command: docker run --name post -e POSTGRES_USER="{{ postgresql_username }}" -e POSTGRES_PASSWORD="{{ postgresql_password }}" -d postgres
+  sudo: True
+

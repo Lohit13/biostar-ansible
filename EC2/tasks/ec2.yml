@@ -1,0 +1,89 @@
+---
+- name: Install boto
+  pip: name=boto
+
+- name: Add ssh public key if it doesn't already exists
+  shell: ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa creates=~/.ssh/id_rsa
+  ignore_errors: True
+
+- name: Import key pair 
+  ec2_key:
+    name: "{{ keypair }}"
+    key_material: "{{ ssh_localhost_public_key }}"
+    state: present
+    region: "{{ region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+
+- name: Create security group
+  ec2_group:
+    name: "{{ group }}"
+    description: HTTP HTTPS SSH allowance 
+    region: "{{ region }}"
+    ec2_access_key: "{{ aws_access_key }}"
+    ec2_secret_key: "{{ aws_secret_key }}"
+    # Inbound rules.
+    rules:
+      # HTTP.
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+      # HTTPS.
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: 0.0.0.0/0
+      # SSH.
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+    # Outbound rules.
+    rules_egress:
+      - proto: all
+        from_port: 0
+        to_port: 65535
+        cidr_ip: 0.0.0.0/0
+
+- name: Get/Create the key pair for instance
+  ec2_key:
+    name: "{{ keypair }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    region: "{{ region }}"
+    state: present
+
+- name: Launch a new ubuntu instance
+  ec2:
+    image: "{{ image }}"
+    instance_type: "{{ instance_type }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    keypair: "{{ keypair }}"
+    region: "{{ region }}"
+    group: "{{ group }}"
+    wait: True
+  register: ec2
+
+- name: Display instance information
+  debug:
+    msg: "Public IP : {{ item.public_ip }}"
+  with_items: ec2.instances
+
+- name: Add the new instance information to hosts
+  add_host:
+    hostname: "{{ item.public_ip }}"
+    groupname: biostarhosts
+  with_items: ec2.instances
+
+- name: Wait till the new instance starts listening on the ssh port
+  wait_for:
+    state: started
+    host: "{{ item.public_ip }}"
+    port: 22
+  with_items: ec2.instances
+
+- name: Add the host to local machine's known hosts
+  shell: ssh-keyscan -t rsa {{ item.public_ip }} >> $HOME/.ssh/known_hosts
+  with_items: ec2.instances

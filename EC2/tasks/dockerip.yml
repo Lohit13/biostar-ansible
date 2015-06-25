@@ -1,0 +1,13 @@
+---
+
+- name: Register postgres docker ip
+  shell: docker inspect post | awk -F '"' '/IPAddress/ {print $4;exit;}'
+  register: shell_output
+
+- name: Add postgres container ip to facts
+  set_fact:
+    post_ip: "{{ item }}"
+  with_items: shell_output.stdout
+
+- name: Check postgres container ip
+  debug: msg="PostgreSQL container ip {{ post_ip }}"

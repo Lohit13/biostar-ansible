@@ -1,0 +1,74 @@
+---
+
+- name: Gathering ec2_facts 
+  ec2_facts:
+  sudo: True
+
+- name: Install git 
+  apt:
+    name: git
+    update_cache: yes
+  sudo: True
+
+- name: Clone the repo
+  git:
+    repo: "{{ git_repo }}"
+    version: "{{ branch }}"
+    dest: "{{ biostar_dir }}"
+
+- name: Copy env file
+  template:
+    src: ./files/biostar/conf/production.env
+    dest: "{{ biostar_dir }}/conf/production.env"
+
+- name: delete existing base settings
+  file: path="{{ biostar_dir }}"/biostar/settings/base.py state=absent
+
+- name: Copy the settings file
+  template:
+    src: ./files/biostar/settings/base.py
+    dest: "{{ biostar_dir }}/biostar/settings/base.py"
+
+- name: Copy logger file
+  template:
+    src: ./files/biostar/settings/logger_production.py
+    dest: "{{ biostar_dir }}/biostar/settings/logger_production.py" 
+
+- name: Copy cron-index.sh
+  template:
+    src: ./files/biostar/cron-index.sh
+    dest: "{{ biostar_dir }}/cron-index.sh"
+    owner: www-data
+    group: www-data 
+    mode: 0755
+  sudo: True
+
+- name: Copy run-biostar.sh
+  template:
+    src: ./files/biostar/run-biostar.sh
+    dest: "{{ biostar_dir }}/run-biostar.sh"
+    owner: www-data
+    group: www-data 
+    mode: 0755
+  sudo: True
+
+- name: Copy Dockerfile
+  template:
+    src: ./files/docker/Dockerfile
+    dest: "{{ base_dir }}/Dockerfile"
+    owner: www-data
+    group: www-data 
+    mode: 0755
+  sudo: True
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,10 @@
+---
+
+- hosts: biostarhosts
+  gather_facts: false
+  remote_user: ubuntu
+  tasks:
+    - include_vars: variables.yml
+    - include: tasks/postgresql.yml
+    - include: tasks/dockerip.yml
+    - include: tasks/biostar.yml

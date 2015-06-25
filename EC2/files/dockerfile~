@@ -1,0 +1,25 @@
+############################################################
+# Dockerfile to build and run Biostar instance
+# Based on Ubuntu
+############################################################
+
+FROM ubuntu
+
+# General requirements
+RUN mkdir {{ biostar_dir }}
+RUN sudo apt-get update
+RUN sudo apt-get install -y git python python-pip postgresql-client-9.3 python-$
+
+# Create a password file for PostgreSQL (for users root and www-data).
+RUN echo "*:*:*:{{ postgresql_username }}:{{ postgresql_password }}" > /root/.pgpass
+RUN chmod 0600 /root/.pgpass
+RUN mkdir /var/www
+RUN echo "*:*:*:{{ postgresql_username }}:{{ postgresql_password }}" > /var/www/.pgpass
+RUN chown -R www-data:www-data /var/www
+RUN chmod 0600 /var/www/.pgpass
+
+# Copy the biostar instance and install requirements
+ADD {{ biostar_dir }} {{ biostar_dir }}
+RUN sudo pip install -r {{ requirement_dir }}
+
+

@@ -1,0 +1,43 @@
+---
+
+- name: Install postgres
+  apt: name={{ item }} state=installed update_cache=yes
+  sudo: True
+  with_items:
+      - postgresql
+      - libpq-dev
+      - python-psycopg2
+
+- name: Get postgresql version
+  shell: psql --version | awk -F ' ' '{print substr($3,0,3);exit;}'
+  register: shell_output
+
+- name: Add postgres container ip to facts
+  set_fact:
+    psql_v: "{{ item }}"
+  with_items: shell_output.stdout
+
+
+- name: Copy Postgres configuration file
+  copy: src=files/postgres/pg_hba.conf dest=/etc/postgresql/{{ psql_v }}/main/pg_hba.conf force=yes
+  sudo: yes
+
+- name: Restart Postgres
+  service: name=postgresql state=restarted
+  sudo: yes
+
+- name: Create postgres databse
+  sudo: yes
+  sudo_user: postgres
+  postgresql_db: name="{{ DATABASE_NAME }}"
+
+- name: Create User
+  sudo: yes
+  sudo_user: postgres
+  postgresql_user: name="{{ postgresql_username }}" password="{{ postgresql_password }}" state=present role_attr_flags=NOSUPERUSER,CREATEDB
+
+- name: Provide user with DB permissions
+  sudo: yes
+  sudo_user: postgres
+  postgresql_user: user="{{ postgresql_username }}" db="{{ DATABASE_NAME }}" priv=ALL
+
