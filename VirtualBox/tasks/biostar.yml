@@ -8,6 +8,7 @@
       - python-setuptools
       - python-virtualenv
       - git
+      - supervisor
 
 - name: create a virtualenv to hold the app
   shell: virtualenv {{ virtualenv_dir }}
@@ -55,7 +56,23 @@
     dest: "{{ biostar_dir }}/run-biostar.sh"
     mode: 777
 
-- name: Run biostar
-  shell: "{{ biostar_dir }}/run-biostar.sh"
+- name: Restart supervisor
+  shell: service supervisor restart 
   sudo: yes
 
+- name: Copy supervisord conf file
+  template:
+    src: ./files/supervisord/biostar.conf
+    dest: /etc/supervisor/conf.d/biostar.conf
+    mode: 777
+  sudo: yes
+
+- name: Supervisor re read
+  shell: supervisorctl reread
+  sudo: yes
+
+- name: Supervisor update
+  shell: supervisorctl update
+  sudo: yes
+
+- debug: msg="ALL DONE!"
