@@ -109,8 +109,8 @@ DATABASES = {
         'NAME': get_env("DATABASE_NAME"),
         'USER': 'biostar',
         'PASSWORD': 'password',
-        'HOST': '{{ post_ip }}',
-        'PORT': '5432',
+        'HOST': get_env('POSTGRES_PORT_5432_TCP_ADDR'),
+        'PORT': get_env('POSTGRES_PORT_5432_TCP_PORT'),
     }
 }
 

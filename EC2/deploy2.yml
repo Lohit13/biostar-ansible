@@ -1,0 +1,20 @@
+---
+
+- name: NON EC2 TEST
+  hosts: localhost
+  connection: local
+  user: lohit
+  gather_facts: False
+  tasks:
+    - name: Load all variables
+      include_vars: variables.yml
+    #- name: Install Docker
+    #  include: tasks/docker.yml
+    #- name: Start postgres container
+    #  include: tasks/postgresql.yml
+    - name: biostar
+      include: tasks/biostar.yml
+
+
+
+

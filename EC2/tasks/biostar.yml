@@ -15,31 +15,42 @@
     repo: "{{ git_repo }}"
     version: "{{ branch }}"
     dest: "{{ biostar_dir }}"
+  sudo: True
+
+- name: Change codebase file owner
+  shell: chown ubuntu {{ biostar_dir }}
+  sudo: True
 
 - name: Copy env file
   template:
     src: ./files/biostar/conf/production.env
     dest: "{{ biostar_dir }}/conf/production.env"
+    owner: ubuntu
+  sudo: True
 
 - name: delete existing base settings
   file: path="{{ biostar_dir }}"/biostar/settings/base.py state=absent
+  sudo: True
 
 - name: Copy the settings file
   template:
     src: ./files/biostar/settings/base.py
     dest: "{{ biostar_dir }}/biostar/settings/base.py"
+    owner: ubuntu
+  sudo: True
 
 - name: Copy logger file
   template:
     src: ./files/biostar/settings/logger_production.py
-    dest: "{{ biostar_dir }}/biostar/settings/logger_production.py" 
+    dest: "{{ biostar_dir }}/biostar/settings/logger_production.py"
+    owner: ubuntu
+  sudo: True
 
 - name: Copy cron-index.sh
   template:
     src: ./files/biostar/cron-index.sh
     dest: "{{ biostar_dir }}/cron-index.sh"
-    owner: www-data
-    group: www-data 
+    owner: ubuntu
     mode: 0755
   sudo: True
 
@@ -47,8 +58,7 @@
   template:
     src: ./files/biostar/run-biostar.sh
     dest: "{{ biostar_dir }}/run-biostar.sh"
-    owner: www-data
-    group: www-data 
+    owner: ubuntu 
     mode: 0755
   sudo: True
 
@@ -56,10 +66,18 @@
   template:
     src: ./files/docker/Dockerfile
     dest: "{{ base_dir }}/Dockerfile"
-    owner: www-data
-    group: www-data 
+    owner: ubuntu 
     mode: 0755
   sudo: True
+
+- name: Build Dockerfile
+  shell: docker build -t biostar . chdir={{ base_dir }}
+  sudo: True
+
+- name: Run biostar
+  shell: docker run -d --name biostar -p 8080:"{{ host_port }}" --link post:postgres -it biostar 
+  sudo: True
+
 
 
 
