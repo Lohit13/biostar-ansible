@@ -26,6 +26,17 @@ biostar_dir: /home/vagrant/codebase/biostar
 requirement_dir: /home/vagrant/codebase/biostar/conf/requirements/deploy.txt
 
 
+# AWS EC2 SETTINGS
+keypair: "biostar-2"
+instance_type: "t1.micro"
+image: "ami-896c96fe"
+group: "biostar-group"
+region: "eu-west-1"
+volume_size: 10
+ssh_localhost_public_key_file_path: "~/.ssh/id_rsa.pub"
+ssh_localhost_public_key: "{{ lookup('file', '' + ssh_localhost_public_key_file_path) }}"
+
+
 # BIOSTAR SETTINGS
 
 # The main website URL.

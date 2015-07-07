@@ -67,12 +67,7 @@
     mode: 777
   sudo: yes
 
-- name: Supervisor re read
-  shell: supervisorctl reread
-  sudo: yes
-
-- name: Supervisor update
-  shell: supervisorctl update
-  sudo: yes
+- name: Making supervisord monitor biostars
+  supervisorctl: name=biostar state=started
 
 - debug: msg="ALL DONE!"
