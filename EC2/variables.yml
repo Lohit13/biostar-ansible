@@ -104,7 +104,5 @@ GOOGLE_DOMAIN: "mydomain.com"
 SITE_LOGO: "neurostars.logo.png"
 SITE_STYLE_CSS: "neurostars.style.less"
 
-# GitHub Webhook password for continuous deployment.
-GITHUB_WEBHOOK_PASSWORD: 'foobar'
-
-# Don't mess with the next line
+# GitHub Handle for continuous deployment.
+GITHUB_HANDLE: "Lohit13"

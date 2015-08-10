@@ -28,7 +28,7 @@
     owner: ubuntu
   sudo: True
 
-- name: delete existing base settings
+- name: Delete existing base settings
   file: path="{{ biostar_dir }}"/biostar/settings/base.py state=absent
   sudo: True
 
@@ -70,13 +70,27 @@
     mode: 0755
   sudo: True
 
+- name: Copy Supervisor config
+  template:
+    src: ./files/supervisord/supervisord.conf
+    dest: "{{ base_dir }}/supervisord.conf"
+    owner: ubuntu 
+    mode: 0755
+  sudo: True
+
 - name: Build Dockerfile
   shell: docker build -t biostar . chdir={{ base_dir }}
   sudo: True
 
 - name: Run biostar
-  shell: docker run -d --name biostar -p 8080:"{{ host_port }}" --link post:postgres -it biostar 
+  shell: docker run -d --name biostar -p 8080:"{{ host_port }}" --link post:postgres -v {{ biostar_dir }}:{{ biostar_dir }} -it biostar 
   sudo: True
+
+- name: Waiting for initial tasks to complete
+  pause: seconds=90
+
+- debug: msg="ALL DONE!"
+
 
 
 

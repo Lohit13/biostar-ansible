@@ -38,6 +38,9 @@ create_database () {
     fi
 }
 
+#Install biostar requirements
+sudo pip install -r {{ biostar_dir }}/{{ requirements_dir }}
+
 cd {{ biostar_dir }}
 
 echo " * Setting environment variables..."
