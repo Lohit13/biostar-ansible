@@ -62,6 +62,14 @@
     mode: 0755
   sudo: True
 
+- name: Copy update.sh for continuous deployment
+  template:
+    src: ./files/biostar/update.sh
+    dest: "{{ biostar_dir }}/update.sh"
+    owner: ubuntu
+    mode: 0755
+  sudo: True
+
 - name: Copy Dockerfile
   template:
     src: ./files/docker/Dockerfile

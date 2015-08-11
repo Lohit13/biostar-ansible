@@ -10,8 +10,8 @@
       include_vars: variables.yml
     #- name: Install Docker
     #  include: tasks/docker.yml
-    - name: Start postgres container
-      include: tasks/postgresql.yml
+    #- name: Start postgres container
+    #  include: tasks/postgresql.yml
     - name: biostar
       include: tasks/biostar.yml
 

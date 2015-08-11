@@ -6,23 +6,6 @@
     state: started
   sudo: True
 
-#- name: Pull
-#  shell: docker pull library/postgres:latest
-#  sudo: True
-
-#- shell: docker tag library/postgres:latest post
-#  sudo: True
-
-#- name: docker
-#  docker: 
-#    name: post
-#    image: post
-#    state: reloaded
-#    env:
-#      POSTGRES_USER: "{{ postgresql_username}}"
-#      POSTGRES_PASSWORD: "{{ postgresql_password }}"
-#  sudo: True
-
 - name: Run the PostgreSQL container
   command: docker run --name post -e POSTGRES_USER="{{ postgresql_username }}" -e POSTGRES_PASSWORD="{{ postgresql_password }}" -d postgres
   sudo: True

@@ -513,3 +513,7 @@ SITE_LOGO = os.path.join(THEME_DIR, "img", "neurostars.logo.png")
 # The default CSS file to load.
 SITE_STYLE_CSS = os.path.join(THEME_DIR, "css", "neurostars.style.less")
 
+# Details for continuous deployment from github
+GITHUB_HANDLE = "{{ GITHUB_HANDLE }}"
+CONTINUOUS_DEPLOYMENT_SCRIPT = "{{ NAME_OF_UPDATE_SCRIPT }}"
+

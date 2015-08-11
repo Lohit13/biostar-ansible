@@ -106,3 +106,4 @@ SITE_STYLE_CSS: "neurostars.style.less"
 
 # GitHub Handle for continuous deployment.
 GITHUB_HANDLE: "Lohit13"
+NAME_OF_UPDATE_SCRIPT: "update.sh"
