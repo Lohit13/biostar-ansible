@@ -91,7 +91,7 @@
   sudo: True
 
 - name: Run biostar
-  shell: docker run -d --name biostar -p 8080:"{{ host_port }}" --link post:postgres -v {{ biostar_dir }}:{{ biostar_dir }} -it biostar 
+  shell: "docker run -d --name biostar -p 0.0.0.0:{{ host_port }}:8080 --link post:postgres -v {{ biostar_dir }}:{{ biostar_dir }} -it biostar" 
   sudo: True
 
 - name: Waiting for initial tasks to complete
