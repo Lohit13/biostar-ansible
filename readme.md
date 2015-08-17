@@ -29,8 +29,8 @@ vagrant up
 	
 ## 2. Overview
 
-An Ansible deployment suite for various deployment options for Biostar-Central using 'ansible'. It contains two provisions for deployment.
-1. Deploying on an AWS EC2 instance using Ansible
+An Ansible deployment suite for various deployment options for Biostar-Central using 'ansible'. It contains two provisions for deployment.\s\s
+1. Deploying on an AWS EC2 instance using Ansible\s\s
 2. An ansible proisioned Vagrant-VirtualBox deployment
 
 For any of the above deployments, cd into the respective directory before continuing.
