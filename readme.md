@@ -89,7 +89,7 @@ To exit any container, simple type `exit`
 To enable continuous deployment with github, follow the steps below:
 
 1. Add the you Github Handle in the 'GITHUB_HANDLE' field in variables.yml
-2. Go to your Biostar fork settings. Add a webhook service and point the payload to 'https://my-biostar-url.com/webhook/github/update'
+2. Go to your Biostar fork settings. Add a webhook service and point the payload to `https://my-biostar-url.com/webhook/github/update`
 
 Now, everytime you push (or your custom webhook payload) to your Biostar fork, the deployed code will automatically get updated and run.
 
@@ -102,7 +102,7 @@ You can also deploy Biostars in a virtual box environment using ansible-provisio
 One needs to have vagrant and virtual box set up on their machine for this deployment. 
 
 To install the above, refer to this manual:
-`http://www.olindata.com/blog/2014/07/installing-vagrant-and-virtual-box-ubuntu-1404-lts'
+`http://www.olindata.com/blog/2014/07/installing-vagrant-and-virtual-box-ubuntu-1404-lts`
 
 ### 4.2. Usage
 
