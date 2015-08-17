@@ -66,9 +66,10 @@ For more installation options, visit [Ansible](http://docs.ansible.com/ansible/i
 ### 3.2. Usage
 
 1. `git clone http://github.com/Lohit13/biostar-ansible`
-2. Edit 'variables.yml'. It contains all the settings required to host your own Biostar-Central app.
-3. run `ansible-playbook deploy.yml -i 'localhost',
-4. Wait for it to finish! All done:)
+2. Add your AWS credentials to the `aws_access_key` and `aws_secret_key` parameter in variables.yml
+3. Edit 'variables.yml'. It contains all the settings required to host your own Biostar-Central app.
+4. run `ansible-playbook deploy.yml -i 'localhost',`
+5. Wait for it to finish! All done:)
 
 ### 3.3. Accessing the containers
 
