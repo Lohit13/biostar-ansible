@@ -75,7 +75,7 @@ For more installation options, visit [Ansible](http://docs.ansible.com/ansible/i
 
 The ansible playbook automatically adds your ssh key to the EC2 instance. So you don't need a .pem file. To access the docker containers, follow the step below:
 
-1. ssh into the EC2 container: ssh ubuntu@IP_OF_CONTAINER
+1. ssh into the EC2 container: `ssh ubuntu@IP_OF_CONTAINER`
 
 To access Postgres Container:
 2. `sudo docker exec -it post bin/bash`
